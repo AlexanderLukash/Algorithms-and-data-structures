@@ -10,8 +10,7 @@ def ShellSort(nums: list[int]) -> list[int]:
                 nums[j] = nums[j - gap]
                 j -= gap
             nums[j] = temp
-
-        gap //= 2
+        gap //=2
 
     return nums
 

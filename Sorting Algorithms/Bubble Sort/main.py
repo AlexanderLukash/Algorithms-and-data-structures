@@ -1,14 +1,3 @@
-def BubbleSort(nums: list[int]) -> list[int]:
-    nums_length = len(nums)
-
-    for i in range(nums_length - 1):
-        for j in range(nums_length - 1):
-            if nums[j] > nums[j + 1]:
-                nums[j], nums[j + 1] = nums[j + 1], nums[j]
-
-    return nums
-
-
 def BubbleSortWhile(nums: list[int]) -> list[int]:
     length = len(nums) - 1
     max_index = 0

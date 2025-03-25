@@ -13,5 +13,7 @@ def InsertionSort(nums: list[int]) -> list[int]:
 
     return nums
 
+
 if '__main__' == __name__:
     print(InsertionSort([5, 3, 8, 4, 1]))
+    print(InsertionSort([4, 1, 3, 9, 7]))
