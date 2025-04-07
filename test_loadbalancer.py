@@ -18,7 +18,7 @@ servers = [
         "last_used": 1616161616,
         "failover_priority": 1,
         "hash_key": "abcd1234",
-        "pheromone": 1.0  # Початкове значення феромону
+        "pheromone": 1.0
     },
     {
         "id": 2,
