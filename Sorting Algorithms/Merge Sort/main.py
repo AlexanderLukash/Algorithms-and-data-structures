@@ -33,5 +33,42 @@ def MergeSort(nums: list[int]) -> list[int]:
     return nums
 
 
+def mergeSort(arr, l, r):
+    # code here
+    n = len(arr)
+    if n > 1:
+        ll = arr[:n // 2]
+        rl = arr[n // 2:]
+
+        mergeSort(ll, l, r)
+        mergeSort(rl, l, r)
+
+        i = 0
+        j = 0
+        k = 0
+
+        while i < len(ll) and j < len(rl):
+            if ll[i] <= rl[j]:
+                arr[k] = ll[i]
+                i += 1
+            else:
+                arr[k] = rl[j]
+                j += 1
+            k += 1
+
+        while i < len(ll):
+            arr[k] = ll[i]
+            i += 1
+            k += 1
+
+        while j < len(rl):
+            arr[k] = rl[j]
+            j += 1
+            k += 1
+
+        return arr
+
+
 if __name__ == '__main__':
     print(MergeSort([5, 3, 8, 8, 4, 1]))
+    print(mergeSort([5, 3, 8, 8, 4, 1], 0, len([5, 3, 8, 8, 4, 1])))

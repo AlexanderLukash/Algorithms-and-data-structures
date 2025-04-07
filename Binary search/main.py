@@ -148,29 +148,6 @@ def BinaryLast(nums: list[int], target: int) -> int:
     return result
 
 
-def nextGreatestLetter(self, letters: list[str], target: str) -> str:
-    N = len(letters)
-    lo = 0
-    hi = N - 1
-    result = -1
-
-    while lo <= hi:
-        mi = lo + (hi - lo) // 2
-
-        if letters[mi] < target:
-            lo = mi + 1
-        elif letters[mi] > target:
-            result = mi
-            hi = mi - 1
-        else:
-            lo = mi + 1
-
-    if result == -1:
-        return letters[0]
-
-    return letters[result]
-
-
 if '__main__' == __name__:
     print(BinarySearchRec([1, 2, 3, 4, 5, 6, 7, 8, 9], 4, 0, 8))
     print(BinarySearchRec([1, 2, 3, 4, 5, 6, 7, 8, 9], 22, 0, 8))
@@ -179,7 +156,7 @@ if '__main__' == __name__:
     print(BinarySearch([1, 2, 3, 4, 5, 6, 7, 8, 9], 22, ))
 
     print(LowerBoundRec([1, 2, 3, 3, 3, 3, 3, 4, 6, 7, 8, 9], 3, 0, 12))
-    print(LowerBoundRec([1, 2, 3, 3, 3, 3, 3, 4, 6, 7, 8, 9], 4, 0, 12))
+    print(LowerBoundRec([1, 2, 3, 3, 3, 3, 3, 6, 7, 8, 9], 4, 0, 12))
 
     print(LowerBound([1, 2, 3, 3, 3, 3, 3, 4, 6, 7, 8, 9], 3))
     print(LowerBound([1, 2, 3, 3, 3, 3, 3, 4, 6, 7, 8, 9], 4))

@@ -16,4 +16,4 @@ load_balancer = RoundRobin(servers)
 
 for i in range(6):
     server = load_balancer.get_next_server()
-    print(f"Request {i + 1} -> {server}")
+    print(f"Request {i} -> {server}")

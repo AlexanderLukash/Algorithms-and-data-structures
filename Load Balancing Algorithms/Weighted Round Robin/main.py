@@ -4,7 +4,6 @@ from dataclasses import dataclass
 @dataclass
 class WeightedRoundRobin:
     servers: list
-    weights: list[int]
     current_index: int = -1
     current_weight: int = 0
 
@@ -14,15 +13,30 @@ class WeightedRoundRobin:
             if self.current_index == 0:
                 self.current_weight -= 1
                 if self.current_weight <= 0:
-                    self.current_weight = max(self.weights)
-            if self.weights[self.current_index] >= self.current_weight:
+                    self.current_weight = max(self.servers, key=lambda server: server['weight'])['weight']
+            if self.servers[self.current_index]['weight'] >= self.current_weight:
                 return self.servers[self.current_index]
 
 
-servers = ["Server1", "Server2", "Server3"]
-weights = [5, 1, 1]
-load_balancer = WeightedRoundRobin(servers, weights)
+servers = [
+    {
+        'name': 'Server1',
+        'weight': 5,
+        'connections': 0
+    },
+    {
+        'name': 'Server2',
+        'weight': 3,
+        'connections': 0
+    },
+    {
+        'name': 'Server3',
+        'weight': 1,
+        'connections': 0
+    }
+]
+load_balancer = WeightedRoundRobin(servers)
 
-for i in range(8):
+for i in range(9):
     server = load_balancer.get_next_server()
-    print(f"Request {i + 1} -> {server}")
+    print(f"Request {i + 1} -> {server['name']}")

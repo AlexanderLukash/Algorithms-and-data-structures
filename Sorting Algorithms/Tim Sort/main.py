@@ -1,71 +1,71 @@
 def InsertionSort(nums: list[int], left: int, right: int) -> list[int]:
-    length = len(nums)
-
-    for step in range(left + 1, right + 1):
-        key = nums[step]
-        j = step - 1
-
-        while j >= left and nums[j] > key:
-            nums[j + 1] = nums[j]
+    for i in range(left + 1, right + 1):
+        j = i
+        while j > left and nums[j] < nums[j - 1]:
+            nums[j], nums[j - 1] = nums[j - 1], nums[j]
             j -= 1
-        nums[j + 1] = key
 
-    return nums
+def merge(nums: list[int], left: int, mid: int, right: int) -> list[int]:
+    ll = nums[left:mid+1]
+    rl = nums[mid+1:right+1]
 
+    i = 0
+    j = 0
+    k = left
 
-def MergeSort(nums: list[int], left: int, mid: int, right: int) -> list[int]:
-    len_1, len_2 = mid - left, right - mid
-
-    left_list = nums[:len_1]
-    right_list = nums[len_2:]
-
-    left_list_index = 0
-    right_list_index = 0
-    merged_list_index = left
-
-    while left_list_index < len_1 and right_list_index < len_2:
-        if left_list[left_list_index] < right_list[right_list_index]:
-            nums[merged_list_index] = left_list[left_list_index]
-            left_list_index += 1
+    while i < len(ll) and j < len(rl):
+        if ll[i] <= rl[j]:
+            nums[k] = ll[i]
+            i += 1
         else:
-            nums[merged_list_index] = right_list[right_list_index]
-            right_list_index += 1
-        merged_list_index += 1
+            nums[k] = rl[j]
+            j += 1
+        k += 1
 
-    while left_list_index < len_1:
-        nums[merged_list_index] = left_list[left_list_index]
-        left_list_index += 1
-        merged_list_index += 1
+    while i < len(ll):
+        nums[k] = ll[i]
+        i += 1
+        k += 1
 
-    while right_list_index < len_2:
-        nums[merged_list_index] = right_list[right_list_index]
-        right_list_index += 1
-        merged_list_index += 1
+    while j < len(rl):
+        nums[k] = rl[j]
+        j += 1
+        k += 1
 
-    return nums
 
+def compute_min_run(n):
+    r = 0
+    while n >= 32:
+        r |= n & 1
+        n >>= 1
+    return n + r
 
 def TimSort(nums: list[int]) -> list[int]:
-    length = len(nums)
+    n = len(nums)
+    min_run = compute_min_run(n)
 
-    min_run = length // 2
-
-    for start in range(0, length, min_run):
-        end = min(start + min_run - 1, length - 1)
+    for start in range(0, n, min_run):
+        end = min(start+min_run - 1, n-1)
         InsertionSort(nums, start, end)
 
     size = min_run
-    while size < length:
-        for i in range(0, length, size * 2):
-            mid = i + size - 1
-            end = min((i + size * 2 - 1), length - 1)
+    while size < n:
+        for left in range(0, n, size * 2):
+            mid = min(left + size - 1, n-1)
+            right = min(left + 2 * size - 1, n - 1)
 
-            if mid < end:
-                MergeSort(nums, i, mid, end)
+            if mid < right:
+                merge(nums, left, mid, right)
+
         size *= 2
 
     return nums
 
 
+
 if __name__ == '__main__':
+    print(TimSort(
+        [3, 1, 2, 5, 4, 6, 8, 7, 10, 9, 2, -2, 4, 5, 12, 4, 0, 1, 3, 1, 2, 5, 4, 6, 8, 7, 10, 9, 2, -2, 4, 5, 12, 4, 0,
+         1, 3, 1, 2, 5, 4, 6, 8, 7, 10, 9, 2, -2, 4, 5, 12, 4, 0, 1, 3, 1, 2, 5, 4, 6, 8, 7, 10, 9, 2, -2, 4, 5, 12, 4,
+         0, 1]))
     print(TimSort([5, 3, 8, 8, 4, 1]))

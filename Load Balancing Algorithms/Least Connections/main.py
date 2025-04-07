@@ -1,56 +1,36 @@
 import random
-from dataclasses import dataclass
+from collections import deque
+from dataclasses import dataclass, field
 
 
 @dataclass
-class LeastConnections:
+class LeastRecentlyUsed:
     servers: list
 
-    def get_least_connections_server(self):
-        min_connections = min(self.servers, key=lambda server: server['connections'])
-        return min_connections
+    def __post_init__(self, ):
+        self.request_queue = deque(servers)  # Ініціалізація черги серверів
+
+    def get_least_recently_used_server(self) -> dict:
+        # Беремо сервер, який найменш недавно використовували (з початку черги)
+        return self.request_queue.popleft()
 
     def route_request(self):
-        selected_server = self.get_least_connections_server()
-        selected_server['connections'] += 1
+        selected_server = self.get_least_recently_used_server()
+        selected_server['connections'] += 1  # Імітація додавання навантаження
+        self.request_queue.append(selected_server)  # Додаємо сервер у кінець черги
         return selected_server
 
 
-servers = [{'name': 'server1', 'connections': 0},
-           {'name': 'server2', 'connections': 0},
-           {'name': 'server3', 'connections': 0}]
+# Ініціалізація серверів
+servers = [
+    {'name': 'server1', 'connections': 0},
+    {'name': 'server2', 'connections': 0},
+    {'name': 'server3', 'connections': 0}
+]
 
-load_balancer = LeastConnections(servers)
+load_balancer = LeastRecentlyUsed(servers)
 
+# Симуляція 10 запитів
 for _ in range(10):
     selected_server = load_balancer.route_request()
-    print("The request is aimed at the server:", selected_server['name'])
-
-
-@dataclass
-class LeastConnectionsRandom(LeastConnections):
-
-    def get_least_loaded_servers(self):
-        # Get the minimum number of connections
-        min_connections = self.get_least_connections_server()['connections']
-        # Return all servers with the minimum number of connections
-        return [server for server in self.servers
-                if server['connections'] == min_connections]
-
-    def route_request(self):
-        least_loaded_servers = self.get_least_loaded_servers()
-        selected_server = random.choice(least_loaded_servers)
-        selected_server['connections'] += 1
-        return selected_server
-
-
-servers = [{'name': 'server1', 'connections': 0},
-           {'name': 'server2', 'connections': 0},
-           {'name': 'server3', 'connections': 0}]
-
-load_balancer = LeastConnectionsRandom(servers)
-print('_' * 25)
-for _ in range(10):
-    print(servers)
-    selected_server = load_balancer.route_request()
-    print("The request is aimed at the server:", selected_server['name'])
+    print(f'Request routed to: {selected_server["name"]}')
